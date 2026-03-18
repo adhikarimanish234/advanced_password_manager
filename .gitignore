@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.env
+secret.key
+passwords.db
+instance/
