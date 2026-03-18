@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecureVault — Create Account</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-card:    #0c2340;
+      --accent:     #28a745;
+      --accent-h:   #218838;
+      --text-main:  #ffffff;
+      --text-muted: #7a94b0;
+      --border:     #1c3554;
+    }
+    body {
+      background: radial-gradient(ellipse at center top, #2c1505 0%, #1a0f0a 70%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text-main);
+      display: grid;
+      grid-template-rows: 60px 1fr 60px;
+    }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(12,35,64,.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; text-decoration: none; color: #fff; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 24px; font-size: 14px; transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+    .btn-nav { padding: 8px 18px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all .2s; }
+    .btn-nav-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .btn-nav-primary:hover { background: var(--accent-h); }
+
+    main {
+      display: grid;
+      grid-template-columns: 1fr 500px 1fr;
+      align-items: center;
+      padding: 40px 20px;
+      overflow-y: auto;
+    }
+    .card {
+      grid-column: 2;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 40px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.5);
+    }
+    .setup-icon { text-align: center; font-size: 48px; margin-bottom: 16px; }
+    .card-title { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .card-sub   { text-align: center; font-size: 14px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+
+    .form-label {
+      display: block; font-size: 11px; font-weight: 700;
+      letter-spacing: .7px; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%; padding: 12px 16px;
+      border-radius: 8px; border: 2px solid var(--border);
+      background: #0a1f38; color: #fff; font-size: 15px;
+      margin-bottom: 16px; transition: border-color .2s;
+    }
+    .form-input:focus { outline: none; border-color: var(--accent); }
+    .form-input::placeholder { color: #456; }
+
+    .strength-wrap { margin-bottom: 18px; }
+    .strength-row  { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 12px; color: var(--text-muted); }
+    .strength-tag  { font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 10px; }
+    .tag-0{background:#dc354522;color:#dc3545;}
+    .tag-1{background:#fd7e1422;color:#fd7e14;}
+    .tag-2{background:#ffc10722;color:#ffc107;}
+    .tag-3{background:#28a74522;color:#28a745;}
+    .tag-4{background:#20c99722;color:#20c997;}
+    .strength-bar      { height: 6px; border-radius: 3px; background: #1c3554; overflow: hidden; }
+    .strength-fill     { height: 100%; width: 0%; border-radius: 3px; transition: width .4s ease, background .4s ease; }
+    .strength-feedback { font-size: 11px; color: #82b4ff; margin-top: 5px; min-height: 16px; }
+
+    .match-msg { font-size: 12px; margin-bottom: 14px; min-height: 16px; }
+    .match-ok  { color: #28a745; }
+    .match-err { color: #e55353; }
+
+    .btn { width: 100%; padding: 13px; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all .2s; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-h); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(40,167,69,.35); }
+    .btn-primary:disabled { background: #1c3554; color: #456; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .alert-error {
+      background: rgba(229,83,83,.12); border: 1px solid rgba(229,83,83,.4);
+      color: #ff8787; border-radius: 8px; padding: 10px 14px;
+      font-size: 13px; margin-bottom: 18px;
+    }
+    .tips { background: rgba(40,167,69,.07); border: 1px solid rgba(40,167,69,.2); border-radius: 8px; padding: 14px; margin-bottom: 22px; }
+    .tips .tips-title { font-size: 12px; font-weight: 700; color: #5cdb7f; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+    .tips ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .tips ul li { font-size: 12px; color: var(--text-muted); display: flex; gap: 7px; }
+    .tips ul li::before { content: '✓'; color: var(--accent); }
+
+    .login-link { text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-muted); }
+    .login-link a { color: #82b4ff; text-decoration: none; }
+    .login-link a:hover { text-decoration: underline; }
+
+    footer {
+      text-align: center; font-size: 12px; color: var(--text-muted); padding: 0 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-top: 1px solid var(--border); background: rgba(12,35,64,.5);
+    }
+    @media (max-width: 600px) { main { grid-template-columns: 1fr; padding: 20px; } .card { grid-column: 1; } }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="/">🔐 SecureVault</a>
+    <div class="nav-links">
+      <a href="/features">Features</a>
+      <a href="/security">Security</a>
+      <a href="/about">About</a>
+    </div>
+    <a class="btn-nav btn-nav-primary" href="/">Login</a>
+  </nav>
+
+  <main>
+    <div class="card">
+      <div class="setup-icon">🛡️</div>
+      <div class="card-title">Create Your Vault</div>
+      <div class="card-sub">
+        Choose a username and a strong master password.<br>
+        Each user gets their own private, encrypted vault.
+      </div>
+
+      {% if error %}
+      <div class="alert-error">⚠️ {{ error }}</div>
+      {% endif %}
+
+      <div class="tips">
+        <div class="tips-title">Tips for a strong master password</div>
+        <ul>
+          <li>Use at least 12 characters</li>
+          <li>Mix uppercase, lowercase, numbers and symbols</li>
+          <li>Avoid names, dates, or common words</li>
+          <li>Consider a passphrase: 4 random words together</li>
+        </ul>
+      </div>
+
+      <form method="POST" action="/setup" id="setupForm">
+
+        <label class="form-label" for="username">Username</label>
+        <input class="form-input" type="text" id="username" name="username"
+               placeholder="Choose a username (min. 3 characters)"
+               value="{{ username or '' }}" required>
+
+        <label class="form-label" for="masterPassword">Master Password</label>
+        <input class="form-input" type="password" id="masterPassword"
+               name="masterPassword" placeholder="Choose a strong master password"
+               oninput="liveCheck(this.value)" required>
+
+        <div class="strength-wrap" id="strengthWrap" style="display:none;">
+          <div class="strength-row">
+            <span>Strength</span>
+            <span class="strength-tag" id="sTag"></span>
+          </div>
+          <div class="strength-bar"><div class="strength-fill" id="sFill"></div></div>
+          <div class="strength-feedback" id="sFeedback"></div>
+        </div>
+
+        <label class="form-label" for="confirmPassword">Confirm Master Password</label>
+        <input class="form-input" type="password" id="confirmPassword"
+               name="confirmPassword" placeholder="Repeat your master password"
+               oninput="checkMatch()" required>
+
+        <div class="match-msg" id="matchMsg"></div>
+
+        <button class="btn btn-primary" type="submit" id="submitBtn" disabled>
+          Create Vault &amp; Login
+        </button>
+      </form>
+
+      <div class="login-link">
+        Already have a vault? <a href="/">Login here</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2026 SecureVault — Gateway Business College, Innovative Group — Capstone Project 2
+  </footer>
+
+  <script>
+    const colours = ['#dc3545','#fd7e14','#ffc107','#28a745','#20c997'];
+    const widths  = ['20%','40%','60%','80%','100%'];
+    let currentScore = 0;
+
+    async function liveCheck(pw) {
+      const wrap = document.getElementById('strengthWrap');
+      if (!pw) { wrap.style.display = 'none'; checkMatch(); return; }
+      wrap.style.display = 'block';
+      try {
+        const res = await fetch('/api/strength/check', {
+          method: 'POST', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({password: pw})
+        });
+        const d = await res.json();
+        currentScore = d.score;
+        document.getElementById('sFill').style.width      = widths[d.score];
+        document.getElementById('sFill').style.background = colours[d.score];
+        document.getElementById('sTag').textContent       = d.strength;
+        document.getElementById('sTag').className         = 'strength-tag tag-' + d.score;
+        document.getElementById('sFeedback').textContent  = d.feedback;
+      } catch(e) { console.error(e); }
+      checkMatch();
+    }
+
+    function checkMatch() {
+      const pw      = document.getElementById('masterPassword').value;
+      const confirm = document.getElementById('confirmPassword').value;
+      const msg     = document.getElementById('matchMsg');
+      const btn     = document.getElementById('submitBtn');
+      if (!confirm) { msg.textContent = ''; btn.disabled = true; return; }
+      if (pw === confirm) {
+        msg.textContent = '✅ Passwords match';
+        msg.className   = 'match-msg match-ok';
+        btn.disabled    = (currentScore < 2 || pw.length < 8);
+      } else {
+        msg.textContent = '❌ Passwords do not match';
+        msg.className   = 'match-msg match-err';
+        btn.disabled    = true;
+      }
+    }
+  </script>
+</body>
+</html>

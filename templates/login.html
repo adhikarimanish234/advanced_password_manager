@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecureVault — Login</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-card:    #0c2340;
+      --accent:     #28a745;
+      --accent-h:   #218838;
+      --text-main:  #ffffff;
+      --text-muted: #7a94b0;
+      --border:     #1c3554;
+      --danger:     #e55353;
+    }
+    body {
+      background: radial-gradient(ellipse at center top, #2c1505 0%, #1a0f0a 70%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text-main);
+      display: grid;
+      grid-template-rows: 60px 1fr 60px;
+    }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(12,35,64,.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-size: 18px; font-weight: 700; text-decoration: none; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 24px; font-size: 14px; transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .btn-nav { padding: 8px 18px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all .2s; }
+    .btn-nav-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+    .btn-nav-outline:hover { background: rgba(40,167,69,.1); }
+
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      max-width: 1100px; width: 100%;
+      margin: 0 auto; padding: 60px 40px; gap: 60px;
+      overflow-y: auto;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: rgba(40,167,69,.15); color: #5cdb7f;
+      border: 1px solid rgba(40,167,69,.4);
+      border-radius: 20px; padding: 4px 14px;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 40px; font-weight: 800; line-height: 1.2; margin-bottom: 14px;
+      background: linear-gradient(135deg,#fff 40%,#82b4ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p { font-size: 15px; color: var(--text-muted); line-height: 1.7; margin-bottom: 26px; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .feature-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-muted); }
+    .feature-list li .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.45);
+    }
+    .card-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .card-sub   { font-size: 13px; color: var(--text-muted); margin-bottom: 28px; }
+
+    .form-label {
+      display: block; font-size: 11px; font-weight: 700;
+      letter-spacing: .7px; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%; padding: 12px 16px;
+      border-radius: 8px; border: 2px solid var(--border);
+      background: #0a1f38; color: #fff; font-size: 15px;
+      margin-bottom: 16px; transition: border-color .2s;
+    }
+    .form-input:focus { outline: none; border-color: var(--accent); }
+    .form-input::placeholder { color: #456; }
+
+    .btn {
+      display: block; width: 100%; padding: 13px;
+      border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-h); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(40,167,69,.35); }
+    .btn-danger  { background: var(--danger); color: #fff; }
+    .btn-danger:hover  { background: #c0392b; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--accent); border: 2px solid var(--accent); margin-top: 10px; }
+    .btn-outline:hover { background: rgba(40,167,69,.1); }
+
+    .divider { display: flex; align-items: center; gap: 12px; margin: 22px 0; color: var(--text-muted); font-size: 12px; }
+    .divider::before, .divider::after { content:''; flex:1; height:1px; background: var(--border); }
+
+    .strength-wrap { margin-top: 12px; }
+    .strength-row  { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+    .strength-tag  { font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 10px; }
+    .tag-0{background:#dc354522;color:#dc3545;}
+    .tag-1{background:#fd7e1422;color:#fd7e14;}
+    .tag-2{background:#ffc10722;color:#ffc107;}
+    .tag-3{background:#28a74522;color:#28a745;}
+    .tag-4{background:#20c99722;color:#20c997;}
+    .strength-bar  { height: 6px; border-radius: 3px; background: #1c3554; overflow: hidden; }
+    .strength-fill { height: 100%; width: 0%; border-radius: 3px; transition: width .4s ease, background .4s ease; }
+    .crack-time { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+    .s-feedback  { font-size: 12px; color: #82b4ff; margin-top: 3px; min-height: 16px; }
+
+    .alert-error {
+      background: rgba(229,83,83,.12); border: 1px solid rgba(229,83,83,.4);
+      color: #ff8787; border-radius: 8px; padding: 10px 14px;
+      font-size: 13px; margin-bottom: 16px;
+    }
+    .alert-success {
+      background: rgba(40,167,69,.12); border: 1px solid rgba(40,167,69,.4);
+      color: #5cdb7f; border-radius: 8px; padding: 10px 14px;
+      font-size: 13px; margin-bottom: 16px;
+    }
+    .bottom-links {
+      text-align: center; margin-top: 16px; font-size: 13px;
+      color: var(--text-muted); display: flex; justify-content: center; gap: 16px;
+    }
+    .bottom-links a { color: #82b4ff; text-decoration: none; }
+    .bottom-links a:hover { text-decoration: underline; }
+    .bottom-links a.danger-link { color: #ff8787; }
+
+    /* ── Delete modal overlay ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.7); backdrop-filter: blur(4px);
+      z-index: 1000; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px; width: 100%; max-width: 420px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.6);
+    }
+    .modal-icon  { text-align: center; font-size: 44px; margin-bottom: 12px; }
+    .modal-title { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .modal-sub   { text-align: center; font-size: 13px; color: var(--text-muted); margin-bottom: 22px; line-height: 1.6; }
+    .modal-warn  {
+      background: rgba(229,83,83,.1); border: 1px solid rgba(229,83,83,.35);
+      color: #ff9f9f; border-radius: 8px; padding: 10px 14px;
+      font-size: 12px; margin-bottom: 20px; line-height: 1.6;
+    }
+    .modal-cancel {
+      display: block; width: 100%; padding: 11px;
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text-muted);
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      margin-top: 10px; transition: all .2s;
+    }
+    .modal-cancel:hover { border-color: #fff; color: #fff; }
+
+    footer {
+      text-align: center; font-size: 12px; color: var(--text-muted); padding: 0 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-top: 1px solid var(--border); background: rgba(12,35,64,.5);
+    }
+    @media (max-width: 768px) {
+      main { grid-template-columns: 1fr; padding: 30px 20px; gap: 30px; }
+      nav  { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="/">🔐 SecureVault</a>
+    <div class="nav-links">
+      <a href="/features">Features</a>
+      <a href="/security">Security</a>
+      <a href="/about">About</a>
+    </div>
+    <div class="nav-right">
+      <a class="btn-nav btn-nav-outline" href="/setup">Create Account</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero -->
+    <div class="hero">
+      <div class="badge">Capstone Project 2 — 2026</div>
+      <h1>Your Passwords.<br>Secured &amp; Managed.</h1>
+      <p>SecureVault checks your password strength in real time and keeps all your credentials encrypted and safe in one place.</p>
+      <ul class="feature-list">
+        <li><span class="dot"></span> Real-time password strength analysis</li>
+        <li><span class="dot"></span> Encrypted local storage per user</li>
+        <li><span class="dot"></span> Password generator built in</li>
+        <li><span class="dot"></span> Auto-fill ready for browser extension</li>
+        <li><span class="dot"></span> No data sent to external servers</li>
+        <li><span class="dot"></span> Multi-user — each vault is fully private</li>
+      </ul>
+    </div>
+
+    <!-- Login card -->
+    <div class="card">
+      <div class="card-title">Welcome back</div>
+      <div class="card-sub">Enter your username and master password to unlock your vault.</div>
+
+      {% if error %}
+        <div class="alert-error">⚠️ {{ error }}</div>
+      {% endif %}
+      {% if success %}
+        <div class="alert-success">✅ {{ success }}</div>
+      {% endif %}
+
+      <form method="POST" action="/login">
+        <label class="form-label" for="username">Username</label>
+        <input class="form-input" type="text" id="username" name="username"
+               placeholder="Enter your username"
+               value="{{ username or '' }}" required>
+
+        <label class="form-label" for="masterPassword">Master Password</label>
+        <input class="form-input" type="password" id="masterPassword"
+               name="masterPassword" placeholder="Enter your master password" required>
+
+        <button class="btn btn-primary" type="submit">Unlock Vault</button>
+      </form>
+
+      <div class="bottom-links">
+        <a href="/setup">New user? Create vault</a>
+        <span style="color:var(--border);">|</span>
+        <a href="#" class="danger-link" onclick="openDeleteModal(); return false;">Delete my account</a>
+      </div>
+
+      <div class="divider">or check strength without login</div>
+
+      <label class="form-label" for="checkPw">Check Password Strength</label>
+      <input class="form-input" type="password" id="checkPw"
+             placeholder="Type any password to analyse"
+             oninput="liveCheck(this.value)">
+      <button class="btn btn-outline" type="button"
+              onclick="liveCheck(document.getElementById('checkPw').value)">
+        Analyse Strength
+      </button>
+
+      <div id="strengthWrap" class="strength-wrap" style="display:none;">
+        <div class="strength-row">
+          <span style="font-size:13px;color:#7a94b0;">Strength</span>
+          <span class="strength-tag" id="sTag"></span>
+        </div>
+        <div class="strength-bar"><div class="strength-fill" id="sFill"></div></div>
+        <div class="crack-time" id="crackTime"></div>
+        <div class="s-feedback"  id="sFeedback"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2026 SecureVault — Gateway Business College, Innovative Group — Capstone Project 2
+  </footer>
+
+  <!-- ── Delete Account Modal ── -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+      <div class="modal-icon">⚠️</div>
+      <div class="modal-title">Delete Account</div>
+      <div class="modal-sub">
+        Enter your credentials to permanently delete your account and all saved passwords.
+      </div>
+      <div class="modal-warn">
+        🚨 This action is <strong>irreversible</strong>. All your saved passwords will be permanently erased.
+      </div>
+
+      <form method="POST" action="/delete-account-verify">
+        <label class="form-label" for="del_username">Username</label>
+        <input class="form-input" type="text" id="del_username" name="del_username"
+               placeholder="Enter your username"
+               value="{{ del_username or '' }}" required>
+
+        <label class="form-label" for="del_password">Master Password</label>
+        <input class="form-input" type="password" id="del_password" name="del_password"
+               placeholder="Enter your master password to confirm" required>
+
+        <button class="btn btn-danger" type="submit">🗑 Yes, Delete My Account</button>
+      </form>
+
+      <button class="modal-cancel" onclick="closeDeleteModal()">Cancel — Keep My Account</button>
+    </div>
+  </div>
+
+  <script>
+    const colours = ['#dc3545','#fd7e14','#ffc107','#28a745','#20c997'];
+    const widths  = ['20%','40%','60%','80%','100%'];
+
+    async function liveCheck(pw) {
+      const wrap = document.getElementById('strengthWrap');
+      if (!pw) { wrap.style.display = 'none'; return; }
+      wrap.style.display = 'block';
+      try {
+        const res = await fetch('/api/strength/check', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({password: pw})
+        });
+        const d = await res.json();
+        document.getElementById('sFill').style.width      = widths[d.score];
+        document.getElementById('sFill').style.background = colours[d.score];
+        document.getElementById('sTag').textContent       = d.strength;
+        document.getElementById('sTag').className         = 'strength-tag tag-' + d.score;
+        document.getElementById('crackTime').textContent  = '⏱ Estimated crack time: ' + d.crack_time;
+        document.getElementById('sFeedback').textContent  = d.feedback;
+      } catch(e) { console.error('Strength check error:', e); }
+    }
+
+    function openDeleteModal() {
+      document.getElementById('deleteModal').classList.add('open');
+    }
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.remove('open');
+    }
+    // Close modal on overlay click
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+      if (e.target === this) closeDeleteModal();
+    });
+
+    // Auto-open modal if server returned show_delete_modal
+    {% if show_delete_modal %}document.addEventListener('DOMContentLoaded', openDeleteModal);{% endif %}
+  </script>
+</body>
+</html>

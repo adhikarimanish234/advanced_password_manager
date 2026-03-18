@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecureVault — Features</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-card:    #0c2340;
+      --accent:     #28a745;
+      --accent-h:   #218838;
+      --text-main:  #ffffff;
+      --text-muted: #7a94b0;
+      --border:     #1c3554;
+    }
+    body {
+      background: radial-gradient(ellipse at center top, #2c1505 0%, #1a0f0a 60%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text-main);
+      display: grid;
+      grid-template-rows: 60px 1fr 60px;
+    }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(12,35,64,.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; text-decoration: none; color: #fff; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 24px; font-size: 14px; transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a.active { color: #fff; border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .btn-nav { padding: 8px 18px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all .2s; }
+    .btn-nav-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+    .btn-nav-outline:hover { background: rgba(40,167,69,.1); }
+    .btn-nav-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .btn-nav-primary:hover { background: var(--accent-h); }
+
+    main { overflow-y: auto; }
+
+    .hero-section { text-align: center; padding: 80px 40px 60px; max-width: 700px; margin: 0 auto; }
+    .badge {
+      display: inline-block;
+      background: rgba(40,167,69,.15); color: #5cdb7f;
+      border: 1px solid rgba(40,167,69,.4);
+      border-radius: 20px; padding: 4px 16px;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero-section h1 {
+      font-size: 44px; font-weight: 800; line-height: 1.2; margin-bottom: 16px;
+      background: linear-gradient(135deg,#fff 40%,#82b4ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-section p { font-size: 17px; color: var(--text-muted); line-height: 1.7; }
+
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px; max-width: 1100px; margin: 0 auto; padding: 0 40px 80px;
+    }
+    .feature-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px; transition: border-color .2s, transform .2s;
+    }
+    .feature-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .f-icon  { font-size: 36px; margin-bottom: 16px; display: block; }
+    .f-title { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+    .f-desc  { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+    .f-tag   {
+      display: inline-block; margin-top: 14px;
+      background: rgba(40,167,69,.1); color: #5cdb7f;
+      border: 1px solid rgba(40,167,69,.3);
+      border-radius: 12px; padding: 3px 12px;
+      font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px;
+    }
+
+    .cta-strip {
+      background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 50px 40px; text-align: center; margin-bottom: 0;
+    }
+    .cta-strip h2 { font-size: 28px; font-weight: 700; margin-bottom: 10px; }
+    .cta-strip p  { font-size: 15px; color: var(--text-muted); margin-bottom: 24px; }
+    .cta-btn {
+      display: inline-block; padding: 13px 32px; background: var(--accent); color: #fff;
+      border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: 700; transition: all .2s;
+    }
+    .cta-btn:hover { background: var(--accent-h); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(40,167,69,.35); }
+
+    footer {
+      text-align: center; font-size: 12px; color: var(--text-muted); padding: 0 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-top: 1px solid var(--border); background: rgba(12,35,64,.5);
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="logo" href="/">🔐 SecureVault</a>
+    <div class="nav-links">
+      <a href="/features" class="active">Features</a>
+      <a href="/security">Security</a>
+      <a href="/about">About</a>
+    </div>
+    <div class="nav-right">
+      <a class="btn-nav btn-nav-outline" href="/setup">Create Account</a>
+      <a class="btn-nav btn-nav-primary" href="/">Login</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="hero-section">
+      <div class="badge">All Features</div>
+      <h1>Everything You Need<br>to Stay Secure</h1>
+      <p>SecureVault combines a powerful password strength checker with a secure, encrypted manager — all in one clean interface.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="f-icon">⚡</span>
+        <div class="f-title">Real-Time Strength Analysis</div>
+        <div class="f-desc">As you type, SecureVault instantly analyses your password using the zxcvbn algorithm — checking for dictionary words, keyboard patterns, repeated characters, and more.</div>
+        <span class="f-tag">Core Feature</span>
+      </div>
+      <div class="feature-card">
+        <span class="f-icon">🎲</span>
+        <div class="f-title">Password Generator</div>
+        <div class="f-desc">Generate cryptographically random 18-character passwords with a single click. Every generated password uses a full mix of uppercase, lowercase, numbers, and symbols.</div>
+        <span class="f-tag">Core Feature</span>
+      </div>
+      <div class="feature-card">
+        <span class="f-icon">🔒</span>
+        <div class="f-title">Encrypted Vault Storage</div>
+        <div class="f-desc">Every password you save is encrypted using Fernet symmetric encryption before being written to the database. Raw passwords are never stored on disk.</div>
+        <span class="f-tag">Security</span>
+      </div>
+      <div class="feature-card">
+        <span class="f-icon">🛡️</span>
+        <div class="f-title">Argon2id Master Password</div>
+        <div class="f-desc">Your master password is hashed using Argon2id — the winner of the Password Hashing Competition and the most resistant algorithm against GPU brute-force attacks.</div>
+        <span class="f-tag">Security</span>
+      </div>
+      <div class="feature-card">
+        <span class="f-icon">👥</span>
+        <div class="f-title">Multi-User Support</div>
+        <div class="f-desc">Multiple users can create their own private vault on the same instance. Each user's passwords are completely isolated — no user can see another's credentials.</div>
+        <span class="f-tag">Multi-User</span>
+      </div>
+      <div class="feature-card">
+        <span class="f-icon">📋</span>
+        <div class="f-title">One-Click Copy</div>
+        <div class="f-desc">Copy your username or password to clipboard instantly with the Copy User and Copy Pass buttons — no need to type or reveal passwords on screen.</div>
+        <span class="f-tag">Usability</span>
+      </div>
+      <div class="feature-card">
+        <span class="f-icon">🗂️</span>
+        <div class="f-title">Category Organisation</div>
+        <div class="f-desc">Organise saved passwords into categories — Email, Banking, Shopping, Social, Work, and General — so you can find credentials quickly in a growing vault.</div>
+        <span class="f-tag">Organisation</span>
+      </div>
+      <div class="feature-card">
+        <span class="f-icon">🔍</span>
+        <div class="f-title">Vault Health Dashboard</div>
+        <div class="f-desc">At a glance, see how many passwords are strong, weak, and how many categories you use. Identify and fix weak credentials before they become a problem.</div>
+        <span class="f-tag">Dashboard</span>
+      </div>
+      <div class="feature-card">
+        <span class="f-icon">🔌</span>
+        <div class="f-title">Browser Extension Ready</div>
+        <div class="f-desc">All backend APIs are designed to connect directly to the companion browser extension. Auto-fill, save, and retrieve passwords from your browser without leaving the page.</div>
+        <span class="f-tag">Integration</span>
+      </div>
+    </div>
+
+    <div class="cta-strip">
+      <h2>Ready to Secure Your Passwords?</h2>
+      <p>Set up your vault in under a minute. No external account needed — everything stays local.</p>
+      <a class="cta-btn" href="/setup">Create Your Vault →</a>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2026 SecureVault — Gateway Business College, Innovative Group — Capstone Project 2
+  </footer>
+</body>
+</html>

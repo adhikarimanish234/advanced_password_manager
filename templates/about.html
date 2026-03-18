@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecureVault — About</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-card:    #0c2340;
+      --accent:     #28a745;
+      --accent-h:   #218838;
+      --text-main:  #ffffff;
+      --text-muted: #7a94b0;
+      --border:     #1c3554;
+    }
+    body {
+      background: radial-gradient(ellipse at center top, #2c1505 0%, #1a0f0a 60%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text-main);
+      display: grid; grid-template-rows: 60px 1fr 60px;
+    }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; background: rgba(12,35,64,.85);
+      backdrop-filter: blur(8px); border-bottom: 1px solid var(--border);
+    }
+    .logo { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; text-decoration: none; color: #fff; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 24px; font-size: 14px; transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a.active { color: #fff; border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .btn-nav { padding: 8px 18px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all .2s; }
+    .btn-nav-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+    .btn-nav-outline:hover { background: rgba(40,167,69,.1); }
+    .btn-nav-primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+    .btn-nav-primary:hover { background: var(--accent-h); }
+
+    main { overflow-y: auto; }
+    .hero-section { text-align: center; padding: 80px 40px 60px; max-width: 700px; margin: 0 auto; }
+    .badge { display: inline-block; background: rgba(40,167,69,.15); color: #5cdb7f; border: 1px solid rgba(40,167,69,.4); border-radius: 20px; padding: 4px 16px; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+    .hero-section h1 { font-size: 44px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; background: linear-gradient(135deg,#fff 40%,#82b4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-section p { font-size: 17px; color: var(--text-muted); line-height: 1.7; }
+
+    .about-layout { max-width: 1100px; margin: 0 auto; padding: 0 40px 80px; display: flex; flex-direction: column; gap: 24px; }
+    .about-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 32px; }
+    .about-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+    .about-card p  { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; margin-top: 20px; }
+    .team-member { background: #0a1f38; border: 1px solid var(--border); border-radius: 12px; padding: 20px 16px; text-align: center; transition: border-color .2s; }
+    .team-member:hover { border-color: var(--accent); }
+    .member-avatar { width: 56px; height: 56px; background: rgba(40,167,69,.15); border: 2px solid rgba(40,167,69,.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; margin: 0 auto 12px; }
+    .member-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .member-id   { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+    .member-role { display: inline-block; font-size: 10px; font-weight: 700; background: rgba(40,167,69,.1); color: #5cdb7f; border: 1px solid rgba(40,167,69,.3); border-radius: 10px; padding: 2px 10px; text-transform: uppercase; letter-spacing: .4px; }
+
+    .tech-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .tech-pill  { background: #0a1f38; border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 7px; }
+    .tech-pill span { font-size: 16px; }
+
+    .timeline { margin-top: 16px; display: flex; flex-direction: column; gap: 0; }
+    .tl-item  { display: flex; gap: 16px; padding-bottom: 24px; }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-left  { display: flex; flex-direction: column; align-items: center; width: 36px; flex-shrink: 0; }
+    .tl-dot   { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg-card); flex-shrink: 0; margin-top: 2px; }
+    .tl-line  { width: 2px; flex: 1; background: var(--border); margin-top: 4px; }
+    .tl-item:last-child .tl-line { display: none; }
+    .tl-right { flex: 1; }
+    .tl-label { font-size: 11px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+    .tl-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .tl-desc  { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    footer { text-align: center; font-size: 12px; color: var(--text-muted); padding: 0 40px; display: flex; align-items: center; justify-content: center; border-top: 1px solid var(--border); background: rgba(12,35,64,.5); }
+    @media (max-width: 768px) { .about-layout { padding: 0 20px 60px; } nav { padding: 0 20px; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="logo" href="/">🔐 SecureVault</a>
+    <div class="nav-links">
+      <a href="/features">Features</a>
+      <a href="/security">Security</a>
+      <a href="/about" class="active">About</a>
+    </div>
+    <div class="nav-right">
+      <a class="btn-nav btn-nav-outline" href="/setup">Create Account</a>
+      <a class="btn-nav btn-nav-primary" href="/">Login</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="hero-section">
+      <div class="badge">About This Project</div>
+      <h1>Meet SecureVault<br>&amp; Our Team</h1>
+      <p>SecureVault is a Capstone Project 2 submission by the Innovative Group at Gateway Business College, Australia.</p>
+    </div>
+
+    <div class="about-layout">
+
+      <div class="about-card">
+        <h2>📖 Project Overview</h2>
+        <p>SecureVault is a full-stack web application developed as part of the Bachelor of Information Technology (Cybersecurity) program at Gateway Business College, Sydney, Australia. The project addresses the widespread problem of weak password practices by providing real-time password strength analysis, secure encrypted storage, and an intuitive user interface — all in a single, locally-hosted application.</p>
+        <br>
+        <p>The system was designed to align with OWASP Top 10 security guidelines, NIST SP 800-63B recommendations, and academic research on password strength estimation. The companion browser extension (developed separately) connects to the same backend API, allowing credentials to be auto-filled directly in the browser.</p>
+      </div>
+
+      <div class="about-card">
+        <h2>👥 Our Team — Innovative Group</h2>
+        <div class="team-grid">
+          <div class="team-member"><div class="member-avatar">👑</div><div class="member-name">Manish Adhikari</div><div class="member-id">ID: 202312341</div><span class="member-role">Group Leader</span></div>
+          <div class="team-member"><div class="member-avatar">💻</div><div class="member-name">Anuj Shah</div><div class="member-id">ID: 202311985</div><span class="member-role">Tech Developer</span></div>
+          <div class="team-member"><div class="member-avatar">🔬</div><div class="member-name">Ishak Tamang</div><div class="member-id">ID: 202312010</div><span class="member-role">Research Analyst</span></div>
+          <div class="team-member"><div class="member-avatar">📝</div><div class="member-name">Ujjwal Phuyal</div><div class="member-id">ID: 202312613</div><span class="member-role">Documentation</span></div>
+          <div class="team-member"><div class="member-avatar">🧪</div><div class="member-name">Mahabir Kumar</div><div class="member-id">ID: 202311725</div><span class="member-role">QA Analyst</span></div>
+          <div class="team-member"><div class="member-avatar">🎨</div><div class="member-name">Sandip</div><div class="member-id">ID: 202311698</div><span class="member-role">Design Lead</span></div>
+        </div>
+      </div>
+
+      <div class="about-card">
+        <h2>🛠️ Technology Stack</h2>
+        <div class="tech-pills">
+          <div class="tech-pill"><span>🐍</span> Python 3.11</div>
+          <div class="tech-pill"><span>🌶️</span> Flask 2.3</div>
+          <div class="tech-pill"><span>🗄️</span> SQLite + SQLAlchemy</div>
+          <div class="tech-pill"><span>🔐</span> Argon2id (argon2-cffi)</div>
+          <div class="tech-pill"><span>🔒</span> Fernet (cryptography.io)</div>
+          <div class="tech-pill"><span>📊</span> zxcvbn-python</div>
+          <div class="tech-pill"><span>🌐</span> HTML5 / CSS3 / JavaScript</div>
+          <div class="tech-pill"><span>📋</span> Trello (Project Management)</div>
+          <div class="tech-pill"><span>🔧</span> Git / GitHub</div>
+          <div class="tech-pill"><span>🧪</span> pytest + Postman</div>
+        </div>
+      </div>
+      <div class="about-card">
+        <h2>🎓 Academic Details</h2>
+        <p><strong>Institution:</strong> Gateway Business College (GBC), Sydney, Australia</p><br>
+        <p><strong>Program:</strong> Bachelor of Information Technology (Cybersecurity)</p><br>
+        <p><strong>Supervisor:</strong> Motiur Rahman</p><br>
+        <p><strong>Contact (Group Leader):</strong> adhikarimanish472@gmail.com · 0450 500 814</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2026 SecureVault — Gateway Business College, Innovative Group — Capstone Project 2
+  </footer>
+</body>
+</html>

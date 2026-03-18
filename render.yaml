@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: advanced-password-manager
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:application
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: FERNET_KEY
+        sync: false
+      - key: FLASK_ENV
+        value: production

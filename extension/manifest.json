@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Password Manager",
+  "version": "1.0.0",
+  "description": "Save, retrieve and auto-fill passwords from your SecureVault.",
+  "permissions": ["activeTab", "scripting", "storage", "clipboardWrite"],
+  "host_permissions": [
+    "http://127.0.0.1:5000/*",
+    "http://localhost:5000/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16":  "icons/icon16.png",
+      "48":  "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [{
+    "matches":  ["<all_urls>"],
+    "js":       ["content.js"],
+    "run_at":   "document_idle"
+  }],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "password-manager@capstone2026",
+      "strict_min_version": "109.0"
+    }
+  }
+}
